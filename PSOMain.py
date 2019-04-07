@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-import subprocess
 from InitializePositionsAndVelocities import InitializePositionsAndVelocities
 from EvaluateSwarm import EvaluateSwarm
 from UpdateVelocities import UpdateVelocities
@@ -28,6 +26,8 @@ swarmFunctionValues = np.empty([1, numberOfParticles])
 
 jFig = 0
 
+YNplot = int(input('Plot swarm? Yes (1) or No (0): '))
+
 for i in range(maxIteration):
     if i == 0:
         swarmFunctionValues = EvaluateSwarm(positions)
@@ -45,9 +45,8 @@ for i in range(maxIteration):
         particleBest = particleBest.T*(1-particleBestIndex) + positions.T*(particleBestIndex)
         particleBest = particleBest.T
     if inertiaWeight > 0.4:
-        inertiaWeight = inertiaWeightDecrease*inertiaWeight
-        
-    if i%10 == 0:
+        inertiaWeight = inertiaWeightDecrease*inertiaWeight    
+    if YNplot == 1 and i%10 == 0:
         fig = plt.figure(0)
         ax = fig.add_subplot(111, projection='3d')
         x = y = np.arange(-20.0, 20.0, 0.05)
@@ -84,11 +83,6 @@ ax.scatter(swarmBest[0],swarmBest[1],ObjectiveFunction(swarmBest),color = "r",s=
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('f(X,Y)')
-#plt.savefig('iteration'+str(jFig))
-
-#os.chdir('/Users/wilhelmsoderqvistwermelin/Documents/Python/SpyderStuff/StochasticOptimization/PSO')
-#subprocess.call(['ffmpeg','-framerate', '100', '-i', 'iteration%d0.png', 'output.avi'])
-#subprocess.call(['ffmpeg', '-i', 'output.avi', '-r', '100', 'out.gif'])
 
 plt.tight_layout()
 for angle in range(0, 360):
